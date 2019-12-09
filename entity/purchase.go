@@ -2,6 +2,8 @@ package entity
 
 import (
 	"database/sql"
+	"encoding/json"
+	"io"
 	"time"
 
 	"github.com/google/uuid"
@@ -50,4 +52,11 @@ func RetrievePurchases(db *sql.DB, from time.Time, to time.Time) (p []Purchase, 
 	}
 
 	return results, nil
+}
+
+func CreatePurchaseFromJson(r io.ReadCloser) (Purchase, error) {
+	decoder := json.NewDecoder(r)
+	p := Purchase{}
+	err := decoder.Decode(&p)
+	return p, err
 }

@@ -3,3 +3,5 @@ node_modules/
 .idea/
 /.idea/
 .envrc
+docker/server/sparschwein
+docker/mysql/persistence

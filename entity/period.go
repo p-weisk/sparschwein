@@ -2,6 +2,8 @@ package entity
 
 import (
 	"database/sql"
+	"encoding/json"
+	"io"
 	"time"
 
 	"github.com/google/uuid"
@@ -9,7 +11,7 @@ import (
 
 const retrievePeriodQuery = "SELECT ID, Comment, Start, End, Budget FROM sparschwein.periods ORDER BY Start DESC;"
 const retrieveOnePeriodQuery = "SELECT ID, Comment, Start, End, Budget FROM sparschwein.periods WHERE ID = ?;"
-const createPeriodQuery = "INSERT INTO sparschwein.purchases (ID, Comment, Start, End, Budget) VALUES (?, ?, ?, ?, ?);"
+const createPeriodQuery = "INSERT INTO sparschwein.periods (ID, Comment, Start, End, Budget) VALUES (?, ?, ?, ?, ?);"
 
 // Budgeting period
 type Period struct {
@@ -22,6 +24,7 @@ type Period struct {
 	Purchases []Purchase
 }
 
+// Persist a period to the given database
 func (p Period) Persist(db *sql.DB) error {
 	id := p.ID.String()
 	b := int(p.Budget)
@@ -46,7 +49,7 @@ func RetrievePeriods(db *sql.DB) (p []Period, err error) {
 		}
 		p.ID = uuid.MustParse(id)
 		p.Budget = Money(b)
-		if p.Start.After(time.Now()) {
+		if p.End.After(time.Now()) {
 			var err error
 			p.Purchases, err = RetrievePurchases(db, p.Start, p.End)
 			if err != nil {
@@ -91,4 +94,11 @@ func RetrieveOnePeriod(db *sql.DB, id uuid.UUID) (p Period, err error) {
 	p.Spent = Money(s)
 
 	return p, nil
+}
+
+func CreatePeriodFromJson(r io.ReadCloser) (Period, error) {
+	decoder := json.NewDecoder(r)
+	p := Period{}
+	err := decoder.Decode(&p)
+	return p, err
 }

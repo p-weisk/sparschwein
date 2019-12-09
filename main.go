@@ -2,12 +2,12 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
-	"net"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/p-weisk/sparschwein/config"
 	"github.com/rs/cors"
 )
 
@@ -17,14 +17,14 @@ var DB *sql.DB
 func main() {
 	// create database handle
 	var dsnerr error
-	DB, dsnerr = sql.Open("mysql", "dev:dev@tcp(db:3306)/sparschwein?parseTime=true")
+	config.DB, dsnerr = sql.Open("mysql", "dev:dev@tcp(db:3306)/sparschwein?parseTime=true")
 	if dsnerr != nil {
 		log.Fatalf("DSN seems invalid: %+v", dsnerr)
 	}
 	defer DB.Close()
 
 	r := mux.NewRouter()
-	registerRoutes(&r)
+	registerRoutes(r)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
