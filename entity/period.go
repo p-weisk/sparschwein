@@ -70,7 +70,7 @@ func RetrievePeriods(db *sql.DB) (p []Period, err error) {
 	return results, nil
 }
 
-// Retrieve a Collection of budgeting periods from the given Database
+// Retrieve one budgeting period by its id from the given Database
 func RetrieveOnePeriod(db *sql.DB, id uuid.UUID) (p Period, err error) {
 	row := db.QueryRow(retrieveOnePeriodQuery, id.String())
 	var sid string
@@ -78,14 +78,14 @@ func RetrieveOnePeriod(db *sql.DB, id uuid.UUID) (p Period, err error) {
 	p = Period{}
 	rerr := row.Scan(&sid, &p.Comment, &p.Start, &p.End, &b)
 	if rerr != nil {
-		return Period{}, err
+		return Period{}, rerr
 	}
 	p.ID = uuid.MustParse(sid)
 	p.Budget = Money(b)
 	var perr error
 	p.Purchases, err = RetrievePurchases(db, p.Start, p.End)
 	if perr != nil {
-		return Period{}, err
+		return Period{}, perr
 	}
 	var s int = 0
 	for _, i := range p.Purchases {

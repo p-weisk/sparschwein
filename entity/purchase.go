@@ -9,8 +9,8 @@ import (
 	"github.com/google/uuid"
 )
 
-const createPurchaseQuery = "INSERT INTO sparschwein.purchases (ID, Title, User, Timestamp, Total, Comment) VALUES (?, ?, ?, ?, ?, ?);"
-const retrievePurchaseQuery = "SELECT ID, Title, User, Timestamp, Total, Comment FROM sparschwein.purchases WHERE Timestamp BETWEEN ? AND ? ORDER BY Timestamp DESC;"
+const createPurchaseQuery = "INSERT INTO sparschwein.purchases (ID, Title, User, Timestamp, Total, Comment, Payment) VALUES (?, ?, ?, ?, ?, ?, ?);"
+const retrievePurchaseQuery = "SELECT ID, Title, User, Timestamp, Total, Comment, Payment FROM sparschwein.purchases WHERE Timestamp BETWEEN ? AND ? ORDER BY Timestamp DESC;"
 
 // Purchase : struct representation of a purchase
 // Purchase Total in cents
@@ -21,13 +21,14 @@ type Purchase struct {
 	Timestamp time.Time
 	Total     Money
 	Comment   string
+	Payment   string
 }
 
 // Persist a purchase to the given database
 func (p Purchase) Persist(db *sql.DB) error {
 	id := p.ID.String()
 	m := int(p.Total)
-	_, err := db.Exec(createPurchaseQuery, id, p.Title, p.User, p.Timestamp, m, p.Comment)
+	_, err := db.Exec(createPurchaseQuery, id, p.Title, p.User, p.Timestamp, m, p.Comment, p.Payment)
 	return err
 }
 
@@ -42,7 +43,7 @@ func RetrievePurchases(db *sql.DB, from time.Time, to time.Time) (p []Purchase, 
 		var id string
 		var t int
 		p := Purchase{}
-		err := rows.Scan(&id, &p.Title, &p.User, &p.Timestamp, &t, &p.Comment)
+		err := rows.Scan(&id, &p.Title, &p.User, &p.Timestamp, &t, &p.Comment, &p.Payment)
 		if err != nil {
 			return nil, err
 		}

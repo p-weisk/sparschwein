@@ -58,7 +58,7 @@ func RetrievePurchasesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	serr := sendJsonResponse(w, purchases)
 	if serr != nil {
-		log.Println(perr.Error)
+		log.Println(serr.Error)
 		return
 	}
 	log.Printf("%+v : HTTP 200/OK on GET /purchases", time.Now())

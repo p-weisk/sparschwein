@@ -7,6 +7,9 @@ import (
 
 func registerRoutes(r *mux.Router) {
 
+	// retrieve ID, Budet and amount spent for current period
+	r.HandleFunc("/api/periods/current", rest.RetrieveCurrentBalanceHandler).Methods("GET")
+
 	// retrieve details, purchases and derived properties of the period with the ID {pid}
 	r.HandleFunc("/api/periods/period-{pid}", rest.RetrieveOnePeriodHandler).Methods("GET")
 

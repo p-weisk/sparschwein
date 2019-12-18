@@ -9,9 +9,10 @@ services:
       MYSQL_ROOT_PASSWORD: dev
     ports:
     - "3306"
-  server:
-    build: ./docker/server
+  api:
+    image: alpine:20191114
     restart: always
+    entrypoint: /go-bin/sparschwein
     volumes:
       - ./docker/server:/go-bin
     ports:

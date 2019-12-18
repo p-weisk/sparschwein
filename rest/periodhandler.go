@@ -42,7 +42,7 @@ func RetrievePeriodsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	serr := sendJsonResponse(w, periods)
 	if serr != nil {
-		log.Println(perr.Error)
+		log.Println(serr.Error)
 		return
 	}
 	log.Printf("%+v : HTTP 200/OK on GET /periods", time.Now())
@@ -65,10 +65,10 @@ func RetrieveOnePeriodHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	serr := sendJsonResponse(w, period)
 	if serr != nil {
-		log.Println(perr.Error())
+		log.Println(serr.Error())
 		return
 	}
-	log.Printf("%+v : HTTP 200/OK on GET /periods", time.Now())
+	log.Printf("%+v : HTTP 200/OK on GET /periods/" + idStr, time.Now())
 }
 	
 
