@@ -19,7 +19,7 @@ class Periods extends Component {
         const username = localStorage.getItem('apiUser');
         const password = localStorage.getItem('apiPassword');           
         this.setState({loadingStatus: 'loading', periods: [],});
-        fetch('http://localhost:8000/api/periods', {
+        fetch('/api/periods', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + btoa(username + ":" + password)

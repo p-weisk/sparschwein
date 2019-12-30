@@ -26,7 +26,7 @@ const Period = (props) => {
         });
         const username = localStorage.getItem('apiUser');
         const password = localStorage.getItem('apiPassword');           
-        fetch('http://localhost:8000/api/periods/period-' + props.data.ID, {
+        fetch('/api/periods/period-' + props.data.ID, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + btoa(username + ":" + password)
@@ -146,7 +146,7 @@ const Period = (props) => {
                 <span> bis </span>
                 {new Date(props.data.End).toLocaleDateString("de-DE")}
             </small>
-            <DeleteButton deleteUrl={ "http://localhost:8000/api/periods/period-" + props.data.ID } refetchFunc= { props.fetchPeriods } />
+            <DeleteButton deleteUrl={ "/api/periods/period-" + props.data.ID } refetchFunc= { props.fetchPeriods } />
         </div>
         <hr className="my-2" />
         <div className="lead">{props.data.Comment}</div>

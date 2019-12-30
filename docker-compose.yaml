@@ -7,16 +7,41 @@ services:
       - ./docker/mysql/persistence:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: dev
-    ports:
-    - "3306"
+    networks:
+      - backend_internal
   api:
     image: alpine:20191114
     restart: always
-    entrypoint: /go-bin/sparschwein
+    entrypoint: "/go-bin/sparschwein"
     volumes:
-      - ./docker/server:/go-bin
+      - "./docker/server:/go-bin"
     environment:
       - SPARSCHWEINENVPATH=/go-bin/.env-dockerdev
+    networks: 
+      - backend_internal
+      - backend_proxy
+  frontend:
+    image: node:10.18
+    restart: always
+    entrypoint: "yarn --cwd /react-app start"
+    volumes:
+      - "./client/sparschwein-client:/react-app"
+    networks: 
+      - frontend_proxy
+  proxy:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - "./docker/nginx:/etc/nginx/conf.d:ro"
     ports:
-    - "8000:8000"
-
+      - "8000:80"
+    networks: 
+      - backend_proxy
+      - frontend_proxy
+networks: 
+  backend_internal:
+    driver: bridge
+  frontend_proxy:
+    driver: bridge
+  backend_proxy:
+    driver: bridge

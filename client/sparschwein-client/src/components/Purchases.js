@@ -18,7 +18,7 @@ class Purchases extends Component {
         const username = localStorage.getItem('apiUser');
         const password = localStorage.getItem('apiPassword');           
         this.setState({loadingStatus: 'loading', purchases: [],});
-        fetch('http://localhost:8000/api/purchases', {
+        fetch('/api/purchases', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + btoa(username + ":" + password)

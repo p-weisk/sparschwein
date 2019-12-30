@@ -32,7 +32,7 @@ class PurchaseCreationDialog extends Component {
                 Comment: this.state.Comment,
                 Payment: this.state.Payment,
             });
-            fetch("http://localhost:8000/api/purchases", {
+            fetch("/api/purchases", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

@@ -62,7 +62,7 @@ class Purchase extends Component {
                     }>
                         {new Date(this.props.data.Timestamp).toLocaleString("de-DE")}
                     </small>
-                    <DeleteButton refetchFunc={ this.props.deleteRefetch } deleteUrl={ "http://localhost:8000/api/purchases/purchase-" + this.props.data.ID } />
+                    <DeleteButton refetchFunc={ this.props.deleteRefetch } deleteUrl={ "/api/purchases/purchase-" + this.props.data.ID } />
                 </div>
             </Collapse>
         </ListGroupItem>

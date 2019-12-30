@@ -31,7 +31,7 @@ class PeriodCreationDialog extends Component {
                 End: this.state.End.toISOString(),
                 Budget: this.state.Budget
             });
-            fetch("http://localhost:8000/api/periods", {
+            fetch("/api/periods", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

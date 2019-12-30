@@ -34,7 +34,7 @@ function App() {
   const fetchBalance = () => {
     const username = localStorage.getItem('apiUser');
     const password = localStorage.getItem('apiPassword');           
-    fetch('http://localhost:8000/api/periods/current', {
+    fetch('/api/periods/current', {
       headers: {
         'Authorization': 'Basic ' + btoa(username + ":" + password)
       }
@@ -68,7 +68,7 @@ function App() {
 
   useEffect(() => {
     fetchBalance();
-    setInterval(fetchBalance, 5000);
+    setInterval(fetchBalance, 30000);
   }, []);
 
   return (
@@ -138,18 +138,31 @@ function App() {
           </Route>
         </Switch>
       </Container>
-      <footer className="bg-blue">
-        <h5 style={{color: "white"}}>API-Zugangsdaten</h5>
-        <form>
-          <input type='text' name="username" id="saveusername"/>
-          <input type='text' name="password" id="savepassword"/>  
-          <button onClick={()=>{
-            const username = document.getElementById("saveusername").value;
-            const password = document.getElementById("savepassword").value;
-            localStorage.setItem("apiUser", username);
-            localStorage.setItem("apiPassword", password);
-          }} type="button">Save credentials</button>
-        </form>
+      <footer style={{backgroundColor: "#192a56", color: "white", padding: "16px 0 32px"}}>
+      <Container>
+        <Row>
+          <Col>
+            <h6>API-Zugangsdaten</h6>
+            <form>
+              <div className="form-group">
+                <label>Username: </label>
+                <input type='text' name="username" id="saveusername" className="form-control" />
+              </div>
+              <div className="form-group">
+                <label>Password: </label>
+                <input type='text' name="password" id="savepassword" className="form-control" />
+              </div>
+              <button type="button" className="btn btn-outline-light" onClick={()=>{
+                const username = document.getElementById("saveusername").value;
+                const password = document.getElementById("savepassword").value;
+                localStorage.setItem("apiUser", username);
+                localStorage.setItem("apiPassword", password);
+                setTimeout(fetchBalance, 500);
+              }} >Save credentials</button>
+            </form>
+          </Col>
+        </Row>
+      </Container>
       </footer>
     </div>
   );
