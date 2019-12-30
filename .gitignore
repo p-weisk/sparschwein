@@ -6,3 +6,5 @@ node_modules/
 .env
 docker/server/sparschwein
 docker/mysql/persistence
+dist/*
+sparschwein-client/build/

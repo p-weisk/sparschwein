@@ -25,7 +25,7 @@ services:
     restart: always
     entrypoint: "yarn --cwd /react-app start"
     volumes:
-      - "./client/sparschwein-client:/react-app"
+      - "./sparschwein-client:/react-app"
     networks: 
       - frontend_proxy
   proxy:
