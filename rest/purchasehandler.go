@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 	"github.com/p-weisk/sparschwein/config"
 	"github.com/p-weisk/sparschwein/entity"
 )
@@ -27,6 +28,27 @@ func CreatePurchaseHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusCreated)
 	log.Printf("%+v : HTTP 201/CREATED on POST /purchases", time.Now())
+}
+
+func DeletePurchaseHandler(w http.ResponseWriter, r *http.Request) {
+	//	allowCors(w)
+	idStr := mux.Vars(r)["pid"]
+	id, ierr := uuid.Parse(idStr)
+	if ierr != nil {
+		http.Error(w, ierr.Error(), http.StatusNotFound)
+		log.Println(ierr.Error)
+		return
+	}
+	p := entity.Purchase{}
+	p.ID = id
+	perr := p.Delete(config.DB)
+	if perr != nil {
+		http.Error(w, "An error occured while trying to delete purchase", http.StatusInternalServerError)
+		log.Println(perr.Error())
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
+	log.Printf("%+v : HTTP 204/NO COTENT on DELETE /purchases/purchase-%s", time.Now(), p.ID.String())
 }
 
 func RetrievePurchasesHandler(w http.ResponseWriter, r *http.Request) {

@@ -14,7 +14,7 @@ import (
 )
 
 func CreatePeriodHandler(w http.ResponseWriter, r *http.Request) {
-//	allowCors(w)
+	//	allowCors(w)
 	p, err := entity.CreatePeriodFromJson(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -32,8 +32,29 @@ func CreatePeriodHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("%+v : HTTP 201/CREATED on POST /periods", time.Now())
 }
 
+func DeletePeriodHandler(w http.ResponseWriter, r *http.Request) {
+	//	allowCors(w)
+	idStr := mux.Vars(r)["pid"]
+	id, ierr := uuid.Parse(idStr)
+	if ierr != nil {
+		http.Error(w, ierr.Error(), http.StatusNotFound)
+		log.Println(ierr.Error)
+		return
+	}
+	p := entity.Period{}
+	p.ID = id
+	perr := p.Delete(config.DB)
+	if perr != nil {
+		http.Error(w, "An error occured while trying to delete period", http.StatusInternalServerError)
+		log.Println(perr.Error())
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
+	log.Printf("%+v : HTTP 204/NO COTENT on DELETE /periods/period-%s", time.Now(), p.ID.String())
+}
+
 func RetrievePeriodsHandler(w http.ResponseWriter, r *http.Request) {
-//	allowCors(w)
+	//	allowCors(w)
 	periods, perr := entity.RetrievePeriods(config.DB)
 	if perr != nil {
 		log.Println(perr.Error)
@@ -49,8 +70,8 @@ func RetrievePeriodsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func RetrieveOnePeriodHandler(w http.ResponseWriter, r *http.Request) {
-//	allowCors(w)
-	idStr := mux.Vars(r, )["pid"]
+	//	allowCors(w)
+	idStr := mux.Vars(r)["pid"]
 	id, ierr := uuid.Parse(idStr)
 	if ierr != nil {
 		http.Error(w, ierr.Error(), http.StatusNotFound)
@@ -68,9 +89,8 @@ func RetrieveOnePeriodHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(serr.Error())
 		return
 	}
-	log.Printf("%+v : HTTP 200/OK on GET /periods/" + idStr, time.Now())
+	log.Printf("%+v : HTTP 200/OK on GET /periods/period-%s", time.Now(), idStr)
 }
-	
 
 func setJsonContentType(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")

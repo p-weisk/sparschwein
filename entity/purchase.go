@@ -11,6 +11,7 @@ import (
 
 const createPurchaseQuery = "INSERT INTO sparschwein.purchases (ID, Title, User, Timestamp, Total, Comment, Payment) VALUES (?, ?, ?, ?, ?, ?, ?);"
 const retrievePurchaseQuery = "SELECT ID, Title, User, Timestamp, Total, Comment, Payment FROM sparschwein.purchases WHERE Timestamp BETWEEN ? AND ? ORDER BY Timestamp DESC;"
+const deletePurchaseQuery = "DELETE FROM sparschwein.purchases WHERE ID = ?;"
 
 // Purchase : struct representation of a purchase
 // Purchase Total in cents
@@ -32,13 +33,20 @@ func (p Purchase) Persist(db *sql.DB) error {
 	return err
 }
 
+// Delete a purchase from the given database
+func (p Purchase) Delete(db *sql.DB) error {
+	id := p.ID.String()
+	_, err := db.Exec(deletePurchaseQuery, id)
+	return err
+}
+
 // Retrieve a list of purchases from the given database
 func RetrievePurchases(db *sql.DB, from time.Time, to time.Time) (p []Purchase, err error) {
 	rows, rerr := db.Query(retrievePurchaseQuery, from, to)
 	if rerr != nil {
 		return nil, rerr
 	}
-	var results []Purchase
+	results := []Purchase{}
 	for rows.Next() {
 		var id string
 		var t int

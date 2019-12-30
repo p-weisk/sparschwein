@@ -15,8 +15,15 @@ class Purchases extends Component {
     }
 
     fetchPurchasesFromAPI = () => {
+        const username = localStorage.getItem('apiUser');
+        const password = localStorage.getItem('apiPassword');           
         this.setState({loadingStatus: 'loading', purchases: [],});
-        fetch('http://localhost:8000/api/purchases')
+        fetch('http://localhost:8000/api/purchases', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + btoa(username + ":" + password)
+            }
+        })
         .then((response) => {
             return response.json();
         })
@@ -55,7 +62,7 @@ class Purchases extends Component {
         }
         if(props.loadingStatus === "success") {
             return <section>
-                <Alert color="success" style={
+                <Alert color="secondary" style={
                     {
                         display: "flex",
                         flexFlow: "row nowrap",
@@ -63,14 +70,14 @@ class Purchases extends Component {
                         alignItems: "center"
                     }
                 }>
-                    <span>Purchases retrieved</span>
+                    <span className="text-success">Purchases retrieved</span>
                     <Button outline size="sm" color="success" onClick={ this.fetchPurchasesFromAPI }>
                         <FontAwesomeIcon icon={faRedoAlt} />
                     </Button>
                 </Alert>
                 <ListGroup flush>
                     { props.purchases.map((purchase) => {
-                        return <Purchase data={ purchase } key={ purchase.ID } />
+                        return <Purchase data={ purchase } key={ purchase.ID } deleteRefetch={ this.fetchPurchasesFromAPI } />
                     }) }
                 </ListGroup>
             </section>

@@ -14,12 +14,14 @@ import {
   Row
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartPlus, faPiggyBank } from '@fortawesome/free-solid-svg-icons';
+import { faCartPlus, faPiggyBank, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 import Purchases from './components/Purchases';
 import Home from './components/Home';
 import PurchaseCreationDialog from './components/PurchaseCreationDialog';
+import PeriodCreationDialog from './components/PeriodCreationDialog';
 import BalanceWidget from './components/BalanceWidget';
+import Periods from './components/Periods';
 
 function App() {
 
@@ -30,7 +32,13 @@ function App() {
   });
 
   const fetchBalance = () => {
-    fetch('http://localhost:8000/api/periods/current')
+    const username = localStorage.getItem('apiUser');
+    const password = localStorage.getItem('apiPassword');           
+    fetch('http://localhost:8000/api/periods/current', {
+      headers: {
+        'Authorization': 'Basic ' + btoa(username + ":" + password)
+      }
+    })
     .then((response) => {
         return response.json();
     })
@@ -96,11 +104,27 @@ function App() {
           spent={ state.Spent }
         />
         <Switch>
+          <Route path="/periods/creation-dialog">
+            <PeriodCreationDialog updateBalance={fetchBalance} />
+          </Route>
           <Route path="/periods">
-            Periods
+            <Row>
+              <Col>
+                <Link to="/periods/creation-dialog">
+                  <div className="lead text-center p-3 border border-primary rounded">
+                    <FontAwesomeIcon icon={ faPlusCircle } />
+                    <span className="font-weight-bold" style={{paddingLeft: "16px"}}>
+                      Periode erstellen
+                    </span>
+                  </div>
+                </Link>
+                <hr className="my-3" />
+              </Col>
+            </Row>
+            <Periods />
           </Route>
           <Route path="/purchases/creation-dialog">
-            <PurchaseCreationDialog updateBalance={fetchBalance}/>
+            <PurchaseCreationDialog updateBalance={fetchBalance} />
           </Route>
           <Route path="/purchases">
             <Purchases />
@@ -114,6 +138,19 @@ function App() {
           </Route>
         </Switch>
       </Container>
+      <footer className="bg-blue">
+        <h5 style={{color: "white"}}>API-Zugangsdaten</h5>
+        <form>
+          <input type='text' name="username" id="saveusername"/>
+          <input type='text' name="password" id="savepassword"/>  
+          <button onClick={()=>{
+            const username = document.getElementById("saveusername").value;
+            const password = document.getElementById("savepassword").value;
+            localStorage.setItem("apiUser", username);
+            localStorage.setItem("apiPassword", password);
+          }} type="button">Save credentials</button>
+        </form>
+      </footer>
     </div>
   );
 }

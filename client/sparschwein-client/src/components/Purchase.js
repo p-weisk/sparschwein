@@ -3,6 +3,7 @@ import {ListGroupItem, Collapse, Badge } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Money from './Money';
+import DeleteButton from './DeleteButton';
 
 class Purchase extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class Purchase extends Component {
     }
 
     render() {
-        return <ListGroupItem className={this.state.isOpen ? "bg-light border rounded shadow-sm" : ""} style={{marginBottom: "4px"}}>
+        return <ListGroupItem className={this.state.isOpen ? "bg-light border rounded shadow-sm" : this.props.grey ? "bg-light" : "" } style={{marginBottom: "4px"}}>
             <div onClick={
                 () => {
                     this.setState((state) => {
@@ -47,14 +48,22 @@ class Purchase extends Component {
                 <hr className="my-2" />
                 <div>{this.props.data.Comment}</div>
                 <hr/>
-                <small style={
-                    {
-                        color: "#22a6b3",
-                        fontWeight: "bold"
-                    }
-                }>
-                    {new Date(this.props.data.Timestamp).toLocaleString("de-DE")}
-                </small>
+                <div style={{
+                    display: "flex",
+                    flexFlow: "row nowrap",
+                    alignItems: "center",
+                    justifyContent: "space-between"
+                }}>
+                    <small style={
+                        {
+                            color: "#22a6b3",
+                            fontWeight: "bold"
+                        }
+                    }>
+                        {new Date(this.props.data.Timestamp).toLocaleString("de-DE")}
+                    </small>
+                    <DeleteButton refetchFunc={ this.props.deleteRefetch } deleteUrl={ "http://localhost:8000/api/purchases/purchase-" + this.props.data.ID } />
+                </div>
             </Collapse>
         </ListGroupItem>
     }

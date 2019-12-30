@@ -12,6 +12,7 @@ import (
 const retrievePeriodQuery = "SELECT ID, Comment, Start, End, Budget FROM sparschwein.periods ORDER BY Start DESC;"
 const retrieveOnePeriodQuery = "SELECT ID, Comment, Start, End, Budget FROM sparschwein.periods WHERE ID = ?;"
 const createPeriodQuery = "INSERT INTO sparschwein.periods (ID, Comment, Start, End, Budget) VALUES (?, ?, ?, ?, ?);"
+const deletePeriodQuery = "DELETE FROM sparschwein.periods WHERE ID = ?;"
 
 // Budgeting period
 type Period struct {
@@ -29,6 +30,13 @@ func (p Period) Persist(db *sql.DB) error {
 	id := p.ID.String()
 	b := int(p.Budget)
 	_, err := db.Exec(createPeriodQuery, id, p.Comment, p.Start, p.End, b)
+	return err
+}
+
+// Delete a period from the given database
+func (p Period) Delete(db *sql.DB) error {
+	id := p.ID.String()
+	_, err := db.Exec(deletePeriodQuery, id)
 	return err
 }
 
@@ -61,7 +69,7 @@ func RetrievePeriods(db *sql.DB) (p []Period, err error) {
 			}
 			p.Spent = Money(s)
 		} else {
-			p.Purchases = nil
+			p.Purchases = []Purchase{}
 			p.Spent = 0
 		}
 		results = append(results, p)

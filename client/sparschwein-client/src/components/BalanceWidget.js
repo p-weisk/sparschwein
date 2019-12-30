@@ -3,8 +3,7 @@ import {
     Alert,
     Col,
     Progress,
-    Row,
-    Spinner
+    Row
 } from 'reactstrap';
 import Money from './Money';
 
@@ -24,7 +23,7 @@ const BalanceWidget = (props) => {
                 />
             </Col>
         </Row>
-    <br />
+        <br />
         <Row>
             <Col sm={6}>
                 <Alert color="success">

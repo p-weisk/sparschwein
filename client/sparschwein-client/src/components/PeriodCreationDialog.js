@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 
 import { Alert, Button, Col, Form, Input, Label, Row, Spinner, FormGroup } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
-class PurchaseCreationDialog extends Component {
+class PeriodCreationDialog extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            Title: "",
-            User: "",
-            Timestamp: new Date(),
-            Total: 0,
             Comment: "",
-            Payment: "Barzahlung",
+            Start: new Date(),
+            End: new Date(),
+            Budget: 0,
             loadingStatus: "ready"
         }
     }
@@ -25,14 +26,12 @@ class PurchaseCreationDialog extends Component {
             const username = localStorage.getItem('apiUser');
             const password = localStorage.getItem('apiPassword');           
             const body = JSON.stringify({
-                Title: this.state.Title,
-                User: this.state.User,
-                Timestamp: this.state.Timestamp.toISOString(),
-                Total: this.state.Total,
                 Comment: this.state.Comment,
-                Payment: this.state.Payment,
+                Start: this.state.Start.toISOString(),
+                End: this.state.End.toISOString(),
+                Budget: this.state.Budget
             });
-            fetch("http://localhost:8000/api/purchases", {
+            fetch("http://localhost:8000/api/periods", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,46 +60,14 @@ class PurchaseCreationDialog extends Component {
                 {
                     feedback
                 }
+                <div>
+                    <Link to="/periods">
+                        <FontAwesomeIcon icon={ faChevronLeft } />
+                        <small style={{paddingLeft: "12px"}} className="font-weight-bold">Zurück zu den Perioden</small>
+                    </Link>
+                </div>
+                <hr className="my-2" />
                 <Form className="form">
-                <FormGroup>
-                    <Label>Titel</Label>
-                    <Input type="text" id="title" onChange={
-                        (e) => {
-                            this.setState({Title: e.target.value});
-                        }
-                    } key="Title" name="Title" />
-                </FormGroup>
-                <FormGroup>
-                    <Label>Einkäufer</Label>
-                   <Input type="text" id="user" onChange={
-                        (e) => {
-                            this.setState({User: e.target.value});
-                        }
-                    } key="User" name="User" />
-                </FormGroup>
-                <FormGroup>
-                    <Label>Kaufdatum</Label>
-                    <br />
-                    <DatePicker 
-                        className="form-control"
-                        allowSameDay={ true }
-                        dateFormat="dd.MM.yyyy"
-                        selected={this.state.Timestamp} 
-                        onChange={
-                            (date) => {
-                                this.setState({Timestamp: date});
-                            }
-                        }
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label>Gesamtpreis</Label>
-                    <Input type="number" id="total" onChange={
-                        (e) => {
-                            this.setState({Total: Number.parseInt(e.target.value, 10)});
-                        }
-                    } key="Total" name="Total" />
-                </FormGroup>
                 <FormGroup>
                     <Label>Kommentar</Label>
                     <Input type="text" id="comment" onChange={
@@ -110,16 +77,42 @@ class PurchaseCreationDialog extends Component {
                     } key="Comment" name="Comment" />
                 </FormGroup>
                 <FormGroup>
-                    <Label>Zahlweise</Label>
-                    <Input type="select" onChange={
-                        (e) => {
-                            this.setState({Payment: e.target.value});
+                    <Label>Startdatum</Label>
+                    <br />
+                    <DatePicker 
+                        className="form-control"
+                        allowSameDay={ true }
+                        dateFormat="dd.MM.yyyy"
+                        selected={this.state.Start} 
+                        onChange={
+                            (date) => {
+                                this.setState({Start: date});
+                            }
                         }
-                    } key="Payment" name="Payment"
-                    >
-                        <option>Barzahlung</option>
-                        <option>Kartenzahlung</option>
-                    </Input>
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label>Enddatum</Label>
+                    <br />
+                    <DatePicker 
+                        className="form-control"
+                        allowSameDay={ true }
+                        dateFormat="dd.MM.yyyy"
+                        selected={this.state.End} 
+                        onChange={
+                            (date) => {
+                                this.setState({End: date});
+                            }
+                        }
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label>Budget</Label>
+                    <Input type="number" id="budget" onChange={
+                        (e) => {
+                            this.setState({Budget: Number.parseInt(e.target.value, 10)});
+                        }
+                    } key="Budget" name="Budget" />
                 </FormGroup>
                 <br />
                 <FormGroup>
@@ -134,4 +127,4 @@ class PurchaseCreationDialog extends Component {
 
 }
 
-export default PurchaseCreationDialog;
+export default PeriodCreationDialog;
