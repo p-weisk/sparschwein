@@ -34,6 +34,7 @@ func main() {
 	dbloc := os.Getenv("dbloc")
 	dbport := os.Getenv("dbport")
 	allowedorigin := os.Getenv("allowedorigin")
+	serverhost := os.Getenv("sparschweinhost")
 
 	// create database handle
 	var dsnerr error
@@ -55,5 +56,5 @@ func main() {
 		Debug: true,
 	})
 
-	http.ListenAndServe(":8000", c.Handler(r))
+	http.ListenAndServe(serverhost + ":8000", c.Handler(r))
 }
