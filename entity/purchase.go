@@ -10,7 +10,7 @@ import (
 )
 
 const createPurchaseQuery = "INSERT INTO sparschwein.purchases (ID, Title, User, Timestamp, Total, Comment, Payment) VALUES (?, ?, ?, ?, ?, ?, ?);"
-const retrievePurchaseQuery = "SELECT ID, Title, User, Timestamp, Total, Comment, Payment FROM sparschwein.purchases WHERE Timestamp BETWEEN ? AND ? ORDER BY Timestamp DESC;"
+const retrievePurchaseQuery = "SELECT ID, Title, User, Timestamp, Total, Comment, Payment FROM sparschwein.purchases WHERE date(Timestamp) BETWEEN date(?) AND date(?) ORDER BY Timestamp DESC;"
 const deletePurchaseQuery = "DELETE FROM sparschwein.purchases WHERE ID = ?;"
 
 // Purchase : struct representation of a purchase
