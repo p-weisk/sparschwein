@@ -74,13 +74,13 @@ func RetrievePurchasesHandler(w http.ResponseWriter, r *http.Request) {
 
 	purchases, perr := entity.RetrievePurchases(config.DB, from, to)
 	if perr != nil {
-		log.Println(perr.Error)
+		log.Println(perr.Error())
 		http.Error(w, perr.Error(), http.StatusInternalServerError)
 		return
 	}
 	serr := sendJsonResponse(w, purchases)
 	if serr != nil {
-		log.Println(serr.Error)
+		log.Println(serr.Error())
 		return
 	}
 	log.Printf("%+v : HTTP 200/OK on GET /purchases", time.Now())

@@ -7,6 +7,16 @@ import (
 
 func registerRoutes(r *mux.Router) {
 
+	// delete shopping list item permanently
+	r.HandleFunc("/shoppinglist/item-{pid}/delete", rest.DeleteShoppingListItemHandler).Methods("DELETE")
+	// mark shopping list item as done (it will not show up on api anymore)
+	r.HandleFunc("/shoppinglist/item-{pid}/done", rest.MarkShoppingListItemDoneHandler).Methods("DELETE")
+
+	// add shopping list item
+	r.HandleFunc("/shoppinglist", rest.AddShoppingListItemHandler).Methods("POST")
+	// retrieve Shopping List
+	r.HandleFunc("/shoppinglist", rest.RetrieveShoppingListHandler).Methods("GET")
+
 	// retrieve ID, Budet and amount spent for current period
 	r.HandleFunc("/api/periods/current", rest.RetrieveCurrentBalanceHandler).Methods("GET")
 

@@ -57,13 +57,13 @@ func RetrievePeriodsHandler(w http.ResponseWriter, r *http.Request) {
 	//	allowCors(w)
 	periods, perr := entity.RetrievePeriods(config.DB)
 	if perr != nil {
-		log.Println(perr.Error)
+		log.Println(perr.Error())
 		http.Error(w, perr.Error(), http.StatusInternalServerError)
 		return
 	}
 	serr := sendJsonResponse(w, periods)
 	if serr != nil {
-		log.Println(serr.Error)
+		log.Println(serr.Error())
 		return
 	}
 	log.Printf("%+v : HTTP 200/OK on GET /periods", time.Now())

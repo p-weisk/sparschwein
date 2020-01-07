@@ -18,6 +18,12 @@ CREATE TABLE sparschwein.periods (
     Budget INTEGER
 );
 
+CREATE TABLE sparschwein.shoppinglist (
+    ID VARCHAR(40) PRIMARY KEY,
+    Done BOOLEAN NOT NULL,
+    Description TEXT
+);
+
 CREATE VIEW sparschwein.orphanedPayments AS SELECT * FROM sparschwein.purchases p WHERE NOT EXISTS (SELECT * FROM sparschwein.periods WHERE date(p.Timestamp) BETWEEN date(Start) AND date(End));
 CREATE VIEW sparschwein.currentPeriod AS SELECT ID, Budget, (SELECT COALESCE(SUM(Total), 0) FROM sparschwein.purchases pu WHERE date(pu.Timestamp) BETWEEN date(pe.Start) AND date(pe.End)) AS Spent FROM sparschwein.periods pe WHERE End >= NOW() AND Start <= NOW() ORDER BY Start DESC LIMIT 1;
 
