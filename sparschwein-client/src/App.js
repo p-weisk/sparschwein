@@ -22,6 +22,8 @@ import PurchaseCreationDialog from './components/PurchaseCreationDialog';
 import PeriodCreationDialog from './components/PeriodCreationDialog';
 import BalanceWidget from './components/BalanceWidget';
 import Periods from './components/Periods';
+import ShoppingListItemCreationDialog from './components/ShoppingListItemCreationDialog';
+import ShoppingList from './components/ShoppingList';
 
 function App() {
 
@@ -83,6 +85,9 @@ function App() {
             </Link>
             <Nav>
               <NavItem>
+                <NavLink to="/shoppinglist" className="nav-link">Einkaufsliste</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink to="/periods" className="nav-link">Perioden</NavLink>
               </NavItem>
               <NavItem>
@@ -129,8 +134,11 @@ function App() {
           <Route path="/purchases">
             <Purchases />
           </Route>
+          <Route path="/shoppinglist/creation-dialog">
+            <ShoppingListItemCreationDialog />
+          </Route>
           <Route path="/shoppinglist">
-            
+            <ShoppingList />
           </Route>
           <Route path="/">
             <Home

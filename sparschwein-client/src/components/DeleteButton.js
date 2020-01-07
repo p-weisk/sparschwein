@@ -40,7 +40,7 @@ class DeleteButton extends Component {
 
     render() {
         if(this.state.loadingStatus === 'ready') {
-            return <Button onClick={ this.deleteStuff } color="danger" outline>
+            return <Button onClick={ this.deleteStuff } color={this.props.color || "danger"} outline>
                 <FontAwesomeIcon icon={ faTrash } />
             </Button>
         }
@@ -69,13 +69,15 @@ class DeleteButton extends Component {
 DeleteButton.propTypes = {
     deleteUrl: PropTypes.string.isRequired,
     refetchFunc: PropTypes.func,
-    redirectPath: PropTypes.string
+    redirectPath: PropTypes.string,
+    color: PropTypes.string,
 }
 
 DeleteButton.defaultProps = {
     deleteUrl: "",
     refetchFunc: () => {},
-    redirectPath: ""
+    redirectPath: "",
+    color: "danger",
 }
 
 export default DeleteButton;
