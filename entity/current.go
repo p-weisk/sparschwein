@@ -19,7 +19,7 @@ func RetrieveCurrentBalance(db *sql.DB) (b CurrentBalance, e error) {
 	var bu int
 	var sp int
 	rerr := row.Scan(&ba.ID, &bu, &sp)
-	if rerr != nil {
+	if rerr != nil && rerr != sql.ErrNoRows {
 		return ba, rerr
 	}
 	ba.Budget = Money(bu)

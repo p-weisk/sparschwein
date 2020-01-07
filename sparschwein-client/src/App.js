@@ -129,6 +129,9 @@ function App() {
           <Route path="/purchases">
             <Purchases />
           </Route>
+          <Route path="/shoppinglist">
+            
+          </Route>
           <Route path="/">
             <Home
               loadingStatus={ state.loadingStatus }

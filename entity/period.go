@@ -42,18 +42,18 @@ func (p Period) Delete(db *sql.DB) error {
 
 // Retrieve a Collection of budgeting periods from the given Database
 func RetrievePeriods(db *sql.DB) (p []Period, err error) {
+	results := []Period{}
 	rows, rerr := db.Query(retrievePeriodQuery)
 	if rerr != nil {
-		return nil, rerr
+		return results, rerr
 	}
-	var results []Period
 	for rows.Next() {
 		var id string
 		var b int
 		p := Period{}
 		err := rows.Scan(&id, &p.Comment, &p.Start, &p.End, &b)
 		if err != nil {
-			return nil, err
+			return results, err
 		}
 		p.ID = uuid.MustParse(id)
 		p.Budget = Money(b)
@@ -61,7 +61,7 @@ func RetrievePeriods(db *sql.DB) (p []Period, err error) {
 			var err error
 			p.Purchases, err = RetrievePurchases(db, p.Start, p.End)
 			if err != nil {
-				return nil, err
+				return results, err
 			}
 			var s int = 0
 			for _, i := range p.Purchases {
@@ -85,7 +85,7 @@ func RetrieveOnePeriod(db *sql.DB, id uuid.UUID) (p Period, err error) {
 	var b int
 	p = Period{}
 	rerr := row.Scan(&sid, &p.Comment, &p.Start, &p.End, &b)
-	if rerr != nil {
+	if rerr != nil && rerr != sql.ErrNoRows {
 		return Period{}, rerr
 	}
 	p.ID = uuid.MustParse(sid)

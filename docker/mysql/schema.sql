@@ -18,7 +18,7 @@ CREATE TABLE sparschwein.periods (
     Budget INTEGER
 );
 
-CREATE TABLE sparschwein.shoppinglist (
+CREATE TABLE sparschwein.shoppingList (
     ID VARCHAR(40) PRIMARY KEY,
     Done BOOLEAN NOT NULL,
     Description TEXT

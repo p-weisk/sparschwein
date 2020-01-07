@@ -41,7 +41,7 @@ func (s ShoppingListItem) MarkAsDone(db *sql.DB) error {
 }
 
 func RetrieveShoppingList(db *sql.DB) (s []ShoppingListItem, err error) {
-	rows, rerr := db.Query(retrievePurchaseQuery)
+	rows, rerr := db.Query(retrieveShoppingListQuery)
 	results := []ShoppingListItem{}
 	if rerr != nil {
 		return results, rerr
