@@ -12,8 +12,8 @@ const ShoppingListItem = (props) => {
             justifyContent: "space-around",
             alignItems: "center"
         }}>
-            <DeleteButton color="success" deleteUrl={"/shoppinglist/item-"+props.data.ID+"/done"} refetchFunc={props.refetchFunc}>Erledigt</DeleteButton>
-            <DeleteButton DeleteUrl={"/shoppinglist/item-"+props.data.ID+"/done"} refetchFunc = {props.deleteRefetch}>Löschen</DeleteButton>
+            <DeleteButton color="success" deleteUrl={"/api/shoppinglist/item-"+props.data.ID+"/done"} refetchFunc={props.deleteRefetch}>Erledigt</DeleteButton>
+            <DeleteButton deleteUrl={"/api/shoppinglist/item-"+props.data.ID+"/delete"} refetchFunc = {props.deleteRefetch}>Löschen</DeleteButton>
         </div>
     </ListGroupItem>
 }

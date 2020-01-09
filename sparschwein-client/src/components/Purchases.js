@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Alert, Col, ListGroup, Row, Spinner, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import { faRedoAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Purchase from './Purchase';
 
 class Purchases extends Component {
@@ -87,11 +88,27 @@ class Purchases extends Component {
     }
 
     render() {
-        return <Row>
-            <Col>
-                {this.data(this.state)}
-            </Col>
-        </Row>
+        return <>
+            <Row>
+                <Col>
+                    <Link to="/purchases/creation-dialog">
+                        <div className="lead text-center p-3 border border-primary rounded">
+                        <FontAwesomeIcon icon={ faPlusCircle } />
+                        <span className="font-weight-bold" style={{paddingLeft: "16px"}}>
+                            Einkauf hinzufügen
+                        </span>
+                        </div>
+                    </Link>
+                    <hr className="my-3" />
+                </Col>
+            </Row>
+
+            <Row>
+                <Col>
+                    {this.data(this.state)}
+                </Col>
+            </Row>
+        </>
     }
 }
 

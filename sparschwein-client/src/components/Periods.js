@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Alert, Button, Col, ListGroup, Row, Spinner } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import { faRedoAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Period from './Period';
 
@@ -94,6 +95,19 @@ class Periods extends Component {
     
     render() {
         return <>
+            <Row>
+              <Col>
+                <Link to="/periods/creation-dialog">
+                  <div className="lead text-center p-3 border border-primary rounded">
+                    <FontAwesomeIcon icon={ faPlusCircle } />
+                    <span className="font-weight-bold" style={{paddingLeft: "16px"}}>
+                      Periode erstellen
+                    </span>
+                  </div>
+                </Link>
+                <hr className="my-3" />
+              </Col>
+            </Row>
             <Row>
                 <Col>
                     { this.feedback(this.state)}

@@ -42,6 +42,7 @@ class DeleteButton extends Component {
         if(this.state.loadingStatus === 'ready') {
             return <Button onClick={ this.deleteStuff } color={this.props.color || "danger"} outline>
                 <FontAwesomeIcon icon={ faTrash } />
+                { this.props.children }
             </Button>
         }
         if(this.state.loadingStatus === 'loading') {

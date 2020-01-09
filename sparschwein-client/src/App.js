@@ -14,7 +14,7 @@ import {
   Row
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartPlus, faPiggyBank, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCartPlus, faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 import Purchases from './components/Purchases';
 import Home from './components/Home';
@@ -113,19 +113,6 @@ function App() {
             <PeriodCreationDialog updateBalance={fetchBalance} />
           </Route>
           <Route path="/periods">
-            <Row>
-              <Col>
-                <Link to="/periods/creation-dialog">
-                  <div className="lead text-center p-3 border border-primary rounded">
-                    <FontAwesomeIcon icon={ faPlusCircle } />
-                    <span className="font-weight-bold" style={{paddingLeft: "16px"}}>
-                      Periode erstellen
-                    </span>
-                  </div>
-                </Link>
-                <hr className="my-3" />
-              </Col>
-            </Row>
             <Periods />
           </Route>
           <Route path="/purchases/creation-dialog">
