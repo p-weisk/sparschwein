@@ -54,7 +54,7 @@ func DeletePurchaseHandler(w http.ResponseWriter, r *http.Request) {
 func RetrievePurchasesHandler(w http.ResponseWriter, r *http.Request) {
 	//	allowCors(w)
 
-	from := time.Time{}
+	from, _ := time.Parse("2006-01-02 15:04:05", "0000-01-01 00:00:01")
 	fromStr, foundFrom := r.URL.Query()["from"]
 	if foundFrom {
 		fr, err := time.Parse(time.RFC3339, fromStr[0])
